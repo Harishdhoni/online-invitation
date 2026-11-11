@@ -246,11 +246,13 @@ All templates fill in the same event details (see TEMPLATES.md).
 | Henna Mandala | Wedding | Mehendi line-work around a turning mandala |
 | Celestial Night | Wedding | Indigo sky, crescent moon, the couple's initials as a constellation |
 | Vintage Postcard | Wedding | Airmail stripes, stamps, postmarks, ticket-style events |
+| Blockbuster | Wedding | A Tamil cinema poster: roll the film, a 3-2-1 leader and a gold title card; the photo as poster art between strips of film, ticket-stub showtimes, film-reel countdown, five-star reviews, THE END |
 | Thoranam Housewarming | Housewarming | Thoranam over the door and a kolam at the threshold, for a Gruhapravesam |
 | Paal Pongum | Housewarming | Light the stove and the milk boils over a brass pot; Athangudi tiles, a Pillaiyar suzhi (உ) emblem, palm-leaf blessings, Tamil-first |
 | Blueprint | Housewarming | For a house the family built: the plans unroll and the house draws itself; drafting title block, room-plan events, dimension-line countdown |
 | Home Lights | Housewarming | Tap the house at dusk and its windows, fairy lights and diyas switch on; pegged polaroid, little-house events, Edison-bulb countdown |
 | Going Up | Housewarming | For a new flat: the lift dial climbs and the doors slide open; apartment-door events, letterbox countdown, notice-board wishes, intercom help |
+| Just Moved In | Housewarming | Moving day: the tape splits, the box opens and a house key pops up; the photo in a wooden frame on the boxes, marker-label events, sticky-note wishes, shipping-label help desk, a WELCOME doormat |
 | Twinkle Little Star | Birthday | A soft night sky with the birthday child's initial in the stars |
 | Sprinkle Cake | Birthday | Blow out the candle on a two-tier cake; drip icing, a party-hat photo frame, macaron countdown |
 | Level Up | Birthday | 8-bit game: PRESS START intro, game HUD, coin-popping ? blocks, stage select, high-score wishes |
@@ -262,21 +264,25 @@ All templates fill in the same event details (see TEMPLATES.md).
 | Rainbow Unicorn | Birthday | Tap the golden horn for a rainbow; gold-foil title, an original unicorn, cloud countdown |
 | Monster Trainer | Birthday | A mystery egg hatches; holo trainer card, events as trading cards, badge countdown |
 | Vel Muruga | Birthday | Lord Murugan's blessings: a peacock-feather fan, a golden Vel (or the family's Murugan picture), Tamil-first |
+| Blast Off | Birthday | Press LAUNCH and the rocket lifts off; the photo in a riveted porthole, mission-log events on planets along an orbit, a T-minus control panel, incoming-transmission wishes, a flag on the moon |
 | Valaikappu | Baby shower | The traditional Tamil bangle ceremony: glass bangles that jingle open, jasmine garland, a wreath of bangles round the photo, Tamil-first |
 | Little Sprout | Baby shower | Water the seed and it sprouts; watercolour leaves, an arched photo window, seed-packet events |
 | Special Delivery | Baby shower | A stork brings the bundle; shipping-label events, a tracking-timeline countdown, gift-tag wishes |
 | Oh Baby | Baby shower | Boho balloon garland with pearl OH BABY letters; let the balloons fly; earthy arch frames |
 | Sweet Dreams | Baby shower | A felt nursery mobile that turns when you wind the music box; stitched felt cards |
+| Bun in the Oven | Baby shower | Open the oven door and something sweet is baking; the photo under a glass cake dome, recipe-card events, measuring-cup countdown, wishes on jam jars, oven mitts |
 | Ring Box | Engagement | Emerald velvet and champagne gold: the ring box opens and the solitaire rises; emerald-cut photo setting, jeweller's-certificate events, faceted-gem countdown |
 | Thamboolam | Engagement | The families exchange thamboolam plates and the lagna pathrikai unrolls; turmeric-dabbed card, betel-leaf photo frame, drawstring-bag events, Tamil-first |
 | Peony Bloom | Engagement | Wine-dark florals: a peony blooms around the couple's initials; gilded oval photo frame, botanical-plate events, pressed-flower wishes |
 | It's a Yes! | Engagement | Bright and festive: the "Will you…?" card flips to a confetti YES!; sticker-badge photo frame, tear-off calendar countdown |
 | Golden Hour | Engagement | A seashore at sunset: the sun sets as the couple join hands; the photo is the sun, events on the sand, messages-in-bottles wishes |
+| Jharokha | Engagement | A palace window in Jaipur pink: the lattice shutters swing open on the couple's initials; cusped-arch photo frame with lattice panels, jharokha events, marble-inlay countdown, notes through the lattice, a lantern |
 | Marigold Mela | Haldi | Tap the urli of haldi: turmeric handprints stamp the screen and a brush sweeps it gold; a canopy of decorated umbrellas, marigold-wreath photo frame, events hung on marigold strings, brass-urli countdown, handprint-stamped wishes |
 | Haldi Groove | Haldi | 70s retro: drop the needle and a haldi-yellow record spins (the music starts with that tap); album-sleeve photo with a date sticker, cassette-tape events, daisy countdown, ON AIR dedications |
 | Phool Chadar | Haldi | Pastel lemon, sage and blush: lift a sheer embroidered dupatta; a phool chadar (flower canopy) with hanging strands, oval photo frame with flower clusters, embroidered events edged with gota lace, embroidery-hoop countdown, stitched-patch wishes |
 | The Haldi Times | Haldi | A newspaper special edition: the front page spins in with "<names> to turn yellow!"; masthead, yellow-printed lead photo, weather and dress-code briefs, a news ticker, clip-out events, letters-to-the-editor wishes |
 | Petal Pool | Haldi | A pool haldi in turquoise and yellow: tap the water and dive in; the photo floats in a pool ring, pool-deck events with lifebuoy numbers, pool-ring countdown, paper-boat wishes |
+| Sunflower Field | Haldi | Rustic: tap the sun and the sunflowers turn to face it; the photo at the heart of a sunflower, wooden signboard events, sunflower-head countdown, honeycomb wishes, a farm gate with a letterbox |
 
 The themed birthday, baby-shower, engagement, haldi and newer housewarming designs use original artwork only (no copyrighted characters, logos or franchise
 names). Their fixed labels carry `data-ta` attributes, so they switch to Tamil with the தமிழ் button. The baby-shower

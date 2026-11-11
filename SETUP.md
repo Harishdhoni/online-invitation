@@ -44,7 +44,7 @@ Local pages save to the **live** Firestore database. To try changes without touc
    ```
 3. Open `admin.html?emulator=1`. It signs in with that test account by itself. The browser stays on the emulator — for the
    admin, the editor and invites — until you open any page with `?emulator=0`. A "Running in emulator mode" bar shows
-   at the bottom. The emulator starts empty: click **Add 41 starter templates**, then create an event.
+   at the bottom. The emulator starts empty: click **Add 47 starter templates**, then create an event.
    See the data at http://127.0.0.1:4000. Auto-translate doesn't work against the emulator.
 
 ## 2. Firebase console (one time, ~10 minutes)
@@ -107,8 +107,8 @@ those are saved to Firestore and appear instantly).
 Open the admin page, log in, and click **Templates** at the top. The first visit creates six categories:
 Weddings, Housewarmings, Birthdays, Baby Showers, Engagements and Haldi Ceremonies.
 
-- **Add 41 starter templates** (shown while some are missing) copies the designs in `public/templates/` into Firestore:
-  ten wedding designs, five housewarming, eleven birthday, five baby-shower, five engagement and five haldi ones. Adding them also creates any category
+- **Add 47 starter templates** (shown while some are missing) copies the designs in `public/templates/` into Firestore:
+  eleven wedding designs, six housewarming, twelve birthday, six baby-shower, six engagement and six haldi ones. Adding them also creates any category
   they need that is missing (for example Haldi Ceremonies on a site set up before it existed). The built-in **Classic Maroon & Gold** design is always
   there for weddings.
 - Templates are listed by category. Each card has a live preview, the events using it, and **Edit**, **Preview ↗**,

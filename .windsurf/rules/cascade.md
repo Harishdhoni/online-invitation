@@ -60,7 +60,7 @@ in `invite.js`.
 - `api/` (Vercel, CommonJS): `invite.js` serves `/<slug>` with per-event OG tags between `<!-- og:start -->` and
   `<!-- og:end -->` and adds `meta wedding-id` / `template-id` and the runtime script. `og-image.js` serves the
   preview image. `_firestore.js` is a credential-less REST reader.
-- `public/templates/*.html` + `starters.json`: 41 starter designs (10 wedding, 5 housewarming, 11 birthday, 5 baby shower, 5 engagement, 5 haldi). These are
+- `public/templates/*.html` + `starters.json`: 47 starter designs (11 wedding, 6 housewarming, 12 birthday, 6 baby shower, 6 engagement, 6 haldi). These are
   **seeds only**. Once added in the admin, events use the Firestore copy, so editing the file changes nothing live.
 
 ## Data (Firestore)

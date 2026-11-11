@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<!--
+  Sunflower Field — haldi template
+  The rustic haldi, in a field of sunflowers. Intro: dawn over the field, the sun low on the horizon and every
+  sunflower still bowed; one tap and the sun rises, the sky turns blue, the flowers lift their heads to face it and
+  bees cross the field. Hero: a summer sky with soft clouds, the names in chunky letters, and the photo as the heart
+  of a big sunflower (seeds stand in until one is uploaded), with the field along the bottom. Events are wooden
+  signboards on posts; the countdown is four sunflower heads; wishes are honeycomb cells with a bee; help is the
+  farm gate with a letterbox; the footer is sunset over the field.
+  Palette: sunflower #f7b500 / #ffd23f · seed #5a3a1a / #3e2810 · leaf #5c9a3a / #3f7a2a · sky #bfe3fb / #7cc6f2 ·
+           cream #fff8e7 · wood #a06a3a / #7a4e2a · honey #f29e1a · ink #3e2810
+  Fonts:   Lilita One (names and headings) · Caveat (handwritten signs) · Quicksand (body) · Catamaran / Noto Sans Tamil (Tamil)
+  A haldi template for the invitation site; it follows TEMPLATES.md, and js/invite.js fills in the names, title,
+  verse, date, photo, events, countdown, wishes and contacts. Labels with data-ta switch to Tamil with the தமிழ் button.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#7cc6f2">
+<title>Haldi — Sunflower Field</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Caveat:wght@600;700&family=Quicksand:wght@500;600;700&family=Catamaran:wght@500;700;900&family=Noto+Sans+Tamil:wght@400;600&display=swap" rel="stylesheet">
+<script>
+  /* Runs before paint: mark JS, and decide whether the intro overlay is shown (not in admin previews or frames). */
+  (function(){
+    var d=document.documentElement, skip=/[?&]preview/.test(location.search);
+    try{ skip=skip||window.self!==window.top; }catch(e){ skip=true; }
+    d.className+=" js"+(skip?"":" intro-open");
+  })();
+</script>
+<style>
+:root{
+  --sun:#f7b500; --sun-l:#ffd23f; --sun-d:#d99700; --seed:#5a3a1a; --seed-d:#3e2810; --leaf:#5c9a3a; --leaf-d:#3f7a2a; --leaf-l:#8cc45a;
+  --sky:#bfe3fb; --sky-d:#7cc6f2; --sky-dd:#4aa8e6; --cream:#fff8e7; --cream2:#fff1cc; --wood:#a06a3a; --wood-d:#7a4e2a; --wood-l:#c8925a; --honey:#f29e1a; --ink:#3e2810; --ink2:#6f5538;
+  --disp:'Lilita One','Catamaran',system-ui,sans-serif;
+  --hand:'Caveat','Catamaran',cursive;
+  --sans:'Quicksand','Noto Sans Tamil',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --ta:'Catamaran','Noto Sans Tamil',sans-serif;
+  --ease:cubic-bezier(.22,.8,.3,1);
+  /* wood grain */
+  --grain:repeating-linear-gradient(180deg,transparent 0 9px,rgba(62,40,16,.1) 9px 11px,transparent 11px 20px),linear-gradient(180deg,#b47a46,#a06a3a 50%,#8c5a30);
+  /* honeycomb */
+  --comb:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 100'><path d='M28 2L54 17V47L28 62L2 47V17Z M28 52L54 67V97L28 112L2 97V67Z M28-48L54-33V-3L28 12L2-3V-33Z' fill='none' stroke='%23f29e1a' stroke-width='2.5' opacity='.35'/></svg>");
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html.intro-open,html.intro-open body{overflow:hidden}
+body{margin:0;min-height:100vh;overflow-x:hidden;font-family:var(--sans);font-size:1.04rem;line-height:1.6;color:var(--ink);background:var(--seed-d);font-variant-numeric:lining-nums}
+h1,h2,h3,p{margin:0}
+a{color:inherit}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun-d);outline-offset:3px;border-radius:12px}
+.ic{width:18px;height:18px;flex:none}
+
+/* ---------- shared bits ---------- */
+.section{position:relative;padding:clamp(70px,10vw,110px) 16px;overflow-x:clip}
+.sec-head{text-align:center;max-width:620px;margin:0 auto clamp(30px,5vw,46px)}
+.eyebrow{display:inline-block;padding:5px 14px;border-radius:999px;font-weight:700;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cream);background:var(--leaf-d)}
+.sec-title{margin-top:12px;font-family:var(--disp);font-weight:400;font-size:clamp(2.3rem,9.8vw,3.5rem);line-height:1.1;color:var(--seed);text-wrap:balance}
+.sec-sub{margin:10px auto 0;max-width:40ch;font-family:var(--hand);font-weight:600;font-size:1.35rem;line-height:1.3;color:var(--ink2);text-wrap:balance}
+html[lang="ta"] .sec-sub{font-family:var(--sans);font-size:1rem;line-height:1.6}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;border:0;cursor:pointer;text-decoration:none;
+  font-family:var(--sans);font-weight:700;font-size:1rem;line-height:1.1;padding:13px 24px;border-radius:999px;
+  background:var(--sun);color:var(--seed-d);box-shadow:0 5px 0 var(--sun-d),0 10px 18px rgba(62,40,16,.25);transition:transform .15s var(--ease),box-shadow .15s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--sun-d),0 12px 20px rgba(62,40,16,.28)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--sun-d),0 6px 12px rgba(62,40,16,.22)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.ghost{background:var(--cream);color:var(--leaf-d);box-shadow:0 5px 0 var(--leaf),0 10px 18px rgba(62,40,16,.15)}
+.js .reveal{opacity:0;transform:translateY(24px)}
+.js .reveal.in{opacity:1;transform:none;transition:opacity .9s ease,transform 1.1s var(--ease)}
+@keyframes show{to{opacity:1}}
+@keyframes fade{to{opacity:0}}
+@keyframes sway{from{rotate:-2deg}to{rotate:2deg}}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* a bee, buzzing across */
+.bee{position:absolute;width:34px;pointer-events:none;animation:buzz var(--t,9s) ease-in-out infinite;animation-delay:var(--dl,0s);opacity:0}
+.bee svg{display:block;width:100%;height:auto;overflow:visible;animation:bob 1.2s ease-in-out infinite}
+@keyframes buzz{0%{opacity:0;transform:translate(-40px,20px)}8%{opacity:1}50%{transform:translate(var(--mid,40vw),-30px)}92%{opacity:1}100%{opacity:0;transform:translate(var(--end,80vw),10px)}}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-5px) rotate(4deg)}}
+/* the field: a row of sunflowers with their stems, repeated along an edge */
+.field{position:absolute;left:0;right:0;bottom:0;pointer-events:none;
+  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 140'><g fill='none' stroke='%233f7a2a' stroke-width='6' stroke-linecap='round'><path d='M30 140V60M100 140V44'/></g><g fill='%235c9a3a'><path d='M30 108c-18-6-22-20-14-28c10 8 14 18 14 28Z'/><path d='M100 96c18-6 22-20 14-28c-10 8-14 18-14 28Z'/><path d='M30 124c16-6 20-18 12-26c-9 8-12 16-12 26Z'/></g><g transform='translate(30 52)'><g fill='%23f7b500'><ellipse cy='-20' rx='5.5' ry='12'/><ellipse cy='-20' rx='5.5' ry='12' transform='rotate(30)'/><ellipse cy='-20' rx='5.5' ry='12' transform='rotate(60)'/><ellipse cy='-20' rx='5.5' ry='12' transform='rotate(90)'/><ellipse cy='-20' rx='5.5' ry='12' transform='rotate(120)'/><ellipse cy='-20' rx='5.5' ry='12' transform='rotate(150)'/><ellipse cy='-20' rx='5.5' ry='12' transform='rotate(180)'/><ellipse cy='-20' rx='5.5' ry='12' transform='rotate(210)'/><ellipse cy='-20' rx='5.5' ry='12' transform='rotate(240)'/><ellipse cy='-20' rx='5.5' ry='12' transform='rotate(270)'/><ellipse cy='-20' rx='5.5' ry='12' transform='rotate(300)'/><ellipse cy='-20' rx='5.5' ry='12' transform='rotate(330)'/></g><circle r='13' fill='%235a3a1a'/><circle r='9' fill='none' stroke='%233e2810' stroke-width='3' stroke-dasharray='1.5 2.5'/></g><g transform='translate(100 36)'><g fill='%23ffd23f'><ellipse cy='-24' rx='6.5' ry='14'/><ellipse cy='-24' rx='6.5' ry='14' transform='rotate(30)'/><ellipse cy='-24' rx='6.5' ry='14' transform='rotate(60)'/><ellipse cy='-24' rx='6.5' ry='14' transform='rotate(90)'/><ellipse cy='-24' rx='6.5' ry='14' transform='rotate(120)'/><ellipse cy='-24' rx='6.5' ry='14' transform='rotate(150)'/><ellipse cy='-24' rx='6.5' ry='14' transform='rotate(180)'/><ellipse cy='-24' rx='6.5' ry='14' transform='rotate(210)'/><ellipse cy='-24' rx='6.5' ry='14' transform='rotate(240)'/><ellipse cy='-24' rx='6.5' ry='14' transform='rotate(270)'/><ellipse cy='-24' rx='6.5' ry='14' transform='rotate(300)'/><ellipse cy='-24' rx='6.5' ry='14' transform='rotate(330)'/></g><circle r='16' fill='%235a3a1a'/><circle r='11' fill='none' stroke='%233e2810' stroke-width='3' stroke-dasharray='1.5 2.5'/></g></svg>") 50% 100%/150px 140px repeat-x}
+
+/* ---------- intro: the sun rises ---------- */
+#curtain-overlay{position:fixed;inset:0;z-index:50;display:none;overflow:hidden;color:var(--cream);background:linear-gradient(180deg,#2c2a6b 0%,#6a4e8f 36%,#e58b7a 62%,#ffcf8a 78%,#ffe6b0 100%)}
+.intro-open #curtain-overlay{display:block}
+#curtain-overlay.open{opacity:0;transition:opacity .7s ease 3.4s;pointer-events:none}
+#curtain-overlay.hidden{display:none}
+.day{position:absolute;inset:0;opacity:0;background:linear-gradient(180deg,#4aa8e6 0%,#8fd0f6 45%,#d9f0fd 80%,#fff3cf 100%)}
+.tap-all{position:absolute;inset:0;z-index:3;width:100%;height:100%;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tap-all:focus-visible{outline-offset:-6px}
+.i-top{position:absolute;z-index:4;left:16px;right:16px;top:max(40px,7vh);text-align:center;pointer-events:none}
+.i-kicker{display:inline-block;padding:5px 14px;border-radius:999px;font-weight:700;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--seed-d);background:var(--sun-l)}
+html[lang="ta"] .i-kicker{font-family:var(--ta);font-weight:900;letter-spacing:0;font-size:.95rem}
+.i-names{margin-top:10px;font-family:var(--disp);font-size:clamp(2.6rem,12vw,4.2rem);line-height:1.1;color:#fff;text-wrap:balance;text-shadow:0 3px 0 var(--seed),0 10px 22px rgba(0,0,0,.3)}
+.i-names .name-part,.i-names .hero-amp{display:inline-block;white-space:nowrap}
+.i-names .hero-amp{font-size:.66em;margin:0 .14em;color:var(--sun-l)}
+.i-names.ta,.names.ta{font-family:var(--ta);font-weight:900;font-size:clamp(2.1rem,9.4vw,3.2rem);line-height:1.35}
+/* The intro's verse slot is for the message on a link that isn't open (the runtime then hides the tap button and
+   empties the names); an event's own verse shows in the hero. */
+.i-verse{display:none;margin:14px auto 0;max-width:32ch;padding:12px 16px;border-radius:18px;font-weight:700;font-size:1rem;line-height:1.7;color:var(--ink);background:var(--cream)}
+#curtain-overlay:has(#openCurtainBtn[style*="none"]) .i-verse{display:block}
+.i-top:not(:has(.name-part)) .i-kicker{display:none}
+.sun{position:absolute;z-index:1;left:50%;top:56%;width:min(42vw,170px);aspect-ratio:1;margin-left:calc(min(42vw,170px)/-2);border-radius:50%;
+  background:radial-gradient(circle at 45% 40%,#fff6c8,#ffd23f 55%,#f7b500);box-shadow:0 0 0 10px rgba(255,210,63,.25),0 0 60px 20px rgba(255,210,63,.55),0 0 140px 50px rgba(247,181,0,.35);transition:transform 2.2s cubic-bezier(.4,.05,.3,1)}
+.sun::before{content:"";position:absolute;inset:-18px;border-radius:50%;border:2.5px solid rgba(255,246,200,.8);animation:pulse 2s ease-out infinite}
+@keyframes pulse{from{opacity:.9;transform:scale(.9)}to{opacity:0;transform:scale(1.45)}}
+.i-field{position:absolute;z-index:2;left:-2%;right:-2%;bottom:0;height:min(46vh,380px);pointer-events:none}
+.i-field svg{display:block;width:100%;height:100%;overflow:visible}
+/* each head hangs from its stem joint until the sun is up, then swings upright */
+.i-field .turn{transform-box:fill-box;transform-origin:50% 100%;transform:rotate(-62deg);transition:transform 1.6s cubic-bezier(.5,.05,.3,1.2)}
+.i-field g:nth-of-type(even)>.turn{transform:rotate(58deg)}
+.open .i-field .turn{transform:rotate(0);transition-delay:1s}
+.open .sun{transform:translateY(-52vh) scale(1.08)}
+.open .day{animation:show 2.2s ease .2s forwards}
+.open .i-hint,.open .i-top{animation:fade .3s ease forwards}
+.open .bee{animation-duration:3s;animation-iteration-count:1;animation-delay:1.6s;animation-fill-mode:forwards}
+.i-hint{position:absolute;z-index:4;left:50%;bottom:max(28px,4.5vh);transform:translateX(-50%);display:inline-flex;align-items:center;gap:10px;white-space:nowrap;padding:12px 22px;border-radius:999px;cursor:pointer;
+  font-weight:700;font-size:1.02rem;color:var(--seed-d);background:var(--sun-l);box-shadow:0 5px 0 var(--sun-d),0 12px 24px rgba(0,0,0,.25)}
+html[lang="ta"] .i-hint{font-family:var(--ta);font-weight:900}
+.i-hint svg{width:22px;height:22px}
+.i-done{position:absolute;z-index:4;left:12px;right:12px;top:34%;text-align:center;opacity:0;font-family:var(--disp);font-size:clamp(2.2rem,10vw,3.4rem);line-height:1.15;color:#fff;text-shadow:0 3px 0 var(--seed),0 10px 22px rgba(0,0,0,.25);pointer-events:none}
+html[lang="ta"] .i-done{font-family:var(--ta);font-weight:900;font-size:1.9rem}
+.open .i-done{animation:popin .6s cubic-bezier(.3,1.6,.5,1) 2.1s forwards}
+@keyframes popin{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+
+/* ---------- hero: the summer sky and the big sunflower ---------- */
+#hero{position:relative;overflow:hidden;overflow:clip;text-align:center;padding:18px 16px 150px;color:var(--ink);background:linear-gradient(180deg,var(--sky-dd),var(--sky-d) 30%,var(--sky) 60%,#eaf6fd 100%)}
+.cloud{position:absolute;z-index:0;height:22px;border-radius:999px;background:#fff;opacity:.9;pointer-events:none;animation:drift var(--t,60s) linear infinite}
+.cloud::before,.cloud::after{content:"";position:absolute;bottom:0;border-radius:50%;background:#fff}
+.cloud::before{left:18%;width:44%;aspect-ratio:1;bottom:30%}
+.cloud::after{right:14%;width:34%;aspect-ratio:1;bottom:20%}
+@keyframes drift{from{transform:translateX(-30vw)}to{transform:translateX(110vw)}}
+#hero .field{height:150px;z-index:1}
+.lang{position:relative;z-index:3;display:inline-flex;gap:2px;padding:4px;border-radius:999px;background:var(--cream);box-shadow:0 6px 16px rgba(62,40,16,.18)}
+.lang-btn{border:0;background:none;cursor:pointer;min-width:52px;min-height:40px;font-weight:700;font-size:.9rem;padding:6px 14px;border-radius:999px;color:var(--seed)}
+.lang-btn.active{background:var(--seed);color:var(--sun-l)}
+.hero-inner{position:relative;z-index:2;max-width:680px;margin:0 auto}
+.kicker{display:inline-block;margin-top:22px;padding:5px 14px;border-radius:999px;font-weight:700;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--seed-d);background:var(--sun-l)}
+html[lang="ta"] .kicker{font-family:var(--ta);font-weight:900}
+.title{margin-top:12px;font-family:var(--hand);font-weight:700;font-size:clamp(1.6rem,6.6vw,2rem);line-height:1.2;color:var(--seed);text-wrap:balance}
+html[lang="ta"] .title{font-family:var(--ta);font-weight:900;font-size:1.35rem}
+.names{margin-top:2px;font-family:var(--disp);font-weight:400;font-size:clamp(3rem,14vw,5.6rem);line-height:1.05;color:#fff;text-wrap:balance;text-shadow:0 4px 0 var(--seed),0 12px 24px rgba(62,40,16,.3)}
+.names .name-part,.names .hero-amp{display:inline-block;white-space:nowrap}
+.names .hero-amp{font-size:.66em;margin:0 .14em;color:var(--sun-l)}
+.invites{margin:8px auto 0;max-width:30ch;font-weight:700;font-size:1.12rem;line-height:1.45;color:var(--seed);text-wrap:balance}
+html[lang="ta"] .invites{font-size:1rem;line-height:1.7}
+.invites .sg{display:none}
+.hero-inner:not(:has(.names .hero-amp)) .invites .pl{display:none}
+.hero-inner:not(:has(.names .hero-amp)) .invites .sg{display:inline}
+/* the photo as the heart of a sunflower; seeds stand in until one is uploaded */
+.flower{position:relative;width:min(84vw,350px);aspect-ratio:1;margin:28px auto 40px;animation:sway 5s ease-in-out infinite alternate}
+.flower>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 12px 14px rgba(62,40,16,.28))}
+.heart{position:absolute;inset:22%;border-radius:50%;overflow:hidden;background:var(--seed);box-shadow:inset 0 0 0 6px var(--seed-d),0 0 0 4px var(--sun-d)}
+.heart>svg{display:block;width:100%;height:100%}
+.cover-img{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;object-position:50% 25%;display:block}
+.verse{margin:0 auto;max-width:40ch;font-weight:700;font-size:1rem;line-height:1.9;color:var(--seed);text-wrap:balance}
+#heroTagline{max-width:36ch;margin:14px auto 0;font-weight:600;color:var(--ink);text-wrap:balance}
+.date-pill{display:inline-block;max-width:100%;margin-top:24px;padding:11px 22px;border-radius:999px;font-weight:700;font-size:1.04rem;line-height:1.4;color:var(--cream);background:var(--seed);box-shadow:0 5px 0 var(--seed-d),0 10px 18px rgba(62,40,16,.25)}
+.scroll-cue{display:inline-flex;flex-direction:column;align-items:center;gap:6px;margin-top:30px;padding:6px 10px;font-weight:700;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--seed);text-decoration:none}
+html[lang="ta"] .scroll-cue [data-ta]{font-family:var(--ta);font-weight:900;letter-spacing:0}
+.scroll-cue i{width:10px;height:10px;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(45deg);animation:nudge 1.8s ease-in-out infinite}
+@keyframes nudge{50%{transform:translate(0,6px) rotate(45deg)}}
+.rise{animation:rise 1.1s var(--ease) both}
+.r1{animation-delay:.12s}.r2{animation-delay:.26s}.r3{animation-delay:.4s}.r4{animation-delay:.55s}
+html.intro-open .rise{animation-play-state:paused}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}}
+
+/* ---------- events: wooden signboards ---------- */
+#events{background:radial-gradient(circle,rgba(92,154,58,.12) 1.4px,transparent 1.9px) 0 0/16px 16px,var(--cream)}
+.signs{display:grid;gap:30px;max-width:460px;margin:0 auto}
+.sign{position:relative;padding:0 0 56px}
+/* the board, with two nails, and the post it stands on */
+.board{position:relative;padding:22px 20px 24px;text-align:center;border-radius:16px;color:var(--cream);background:var(--grain);box-shadow:inset 0 0 0 3px rgba(62,40,16,.35),0 16px 28px rgba(62,40,16,.28)}
+.board::before,.board::after{content:"";position:absolute;top:12px;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e8d6b8,#8a7560 60%,#4a3a2a);box-shadow:0 1px 2px rgba(0,0,0,.4)}
+.board::before{left:12px}.board::after{right:12px}
+.post{position:absolute;left:50%;bottom:0;width:26px;height:64px;margin-left:-13px;z-index:-1;background:var(--grain);border-radius:0 0 4px 4px;box-shadow:inset 0 0 0 2px rgba(62,40,16,.35)}
+/* the arrow-shaped number plate pinned to the top */
+.arrow{position:absolute;left:50%;top:-20px;translate:-50% 0;padding:5px 22px 5px 16px;font-family:var(--disp);font-size:1.1rem;line-height:1;color:var(--seed-d);background:var(--sun-l);clip-path:polygon(0 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,0 100%);box-shadow:0 4px 0 var(--sun-d)}
+.c-icon{display:grid;place-items:center;width:62px;height:62px;margin:6px auto 10px;border-radius:50%;font-size:1.9rem;line-height:1;background:var(--cream);box-shadow:inset 0 0 0 3px var(--sun)}
+.c-icon img{width:38px;height:38px;object-fit:contain}
+.c-name{font-family:var(--hand);font-weight:700;font-size:clamp(2.1rem,8.4vw,2.6rem);line-height:1.1;color:var(--cream2);overflow-wrap:anywhere}
+html[lang="ta"] .c-name{font-family:var(--ta);font-weight:900;font-size:1.5rem;line-height:1.45}
+.label{margin:14px -6px 0;padding:12px 14px 16px;border-radius:10px;text-align:left;color:var(--ink);background:var(--cream)}
+.c-info{margin:0;padding:0}
+.c-info>div{display:flex;gap:12px;align-items:baseline;padding:8px 2px;border-top:1.5px dashed rgba(90,58,26,.25)}
+.c-info>div:first-child{border-top:0}
+.c-info dt{flex:none;width:80px;display:flex;align-items:center;gap:7px;font-weight:700;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--leaf-d)}
+html[lang="ta"] .c-info dt [data-ta]{font-family:var(--ta);font-weight:900;letter-spacing:0;font-size:.9rem}
+.c-info dt .ic{width:16px;height:16px;align-self:center}
+.c-info dd{margin:0;flex:1;min-width:0;line-height:1.45;overflow-wrap:anywhere;font-size:.98rem}
+.c-info strong{display:block;font-weight:700}
+.c-info small{display:block;font-size:.92rem;color:var(--ink2)}
+.c-desc{margin:12px auto 16px;max-width:32ch;font-family:var(--hand);font-weight:600;font-size:1.3rem;line-height:1.3;color:var(--ink2);text-wrap:balance}
+html[lang="ta"] .c-desc{font-family:var(--sans);font-size:.98rem;line-height:1.6}
+.label .btn{min-height:44px;padding:10px 18px;font-size:.95rem}
+
+/* ---------- countdown: sunflower heads ---------- */
+#countdown{color:var(--cream);background:linear-gradient(180deg,var(--leaf-d),#2f6221)}
+#countdown .sec-title{color:var(--sun-l)}
+#countdown .eyebrow{background:var(--sun);color:var(--seed-d)}
+.heads{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(6px,2.6vw,22px);max-width:620px;margin:0 auto}
+.cd{min-width:0;text-align:center}
+.head{position:relative;aspect-ratio:1;display:grid;place-items:center;animation:sway 4s ease-in-out infinite alternate}
+.cd:nth-child(2) .head{animation-delay:-1s}.cd:nth-child(3) .head{animation-delay:-2s}.cd:nth-child(4) .head{animation-delay:-3s}
+.head svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 6px 6px rgba(0,0,0,.25))}
+.head b{position:relative;font-family:var(--disp);font-size:clamp(1.05rem,5vw,1.9rem);line-height:1;color:var(--sun-l);font-variant-numeric:lining-nums tabular-nums}
+.cd .lbl{margin-top:10px;font-weight:700;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cream)}
+html[lang="ta"] .cd .lbl{font-family:var(--ta);font-weight:900;letter-spacing:0;font-size:.92rem}
+.cd-when{margin-top:30px;text-align:center;font-family:var(--hand);font-weight:700;font-size:clamp(1.5rem,6vw,1.9rem);line-height:1.4;color:var(--cream)}
+.cd-when .sep{margin:0 .4em 0 .15em;color:var(--sun-l)}
+.cd-when span{white-space:nowrap}
+html[lang="ta"] .cd-when{font-family:var(--ta);font-weight:700;font-size:1.08rem}
+
+/* ---------- wishes: the honeycomb ---------- */
+#wishes{background:var(--comb) 0 0/56px 100px,linear-gradient(180deg,#fff3d1,var(--cream2))}
+.wish-form{position:relative;max-width:560px;margin:0 auto 60px;padding:34px 22px 26px;display:grid;gap:16px;border-radius:24px;background:var(--cream);box-shadow:0 18px 34px rgba(62,40,16,.15),inset 0 0 0 3px var(--honey)}
+.form-bee{position:absolute;right:16px;top:-22px;width:52px;animation:bob 1.4s ease-in-out infinite}
+.field2{display:grid;gap:7px;font-weight:700;font-size:.94rem;color:var(--ink2)}
+.field2 input,.field2 textarea{width:100%;border:2px solid #f3dfae;background:#fffdf6;border-radius:16px;padding:13px 15px;font-size:1rem;color:var(--ink);resize:vertical;transition:border-color .2s,box-shadow .2s}
+.field2 input::placeholder,.field2 textarea::placeholder{color:#a08d6e}
+.field2 input:focus,.field2 textarea:focus{outline:none;border-color:var(--honey);box-shadow:0 0 0 4px rgba(242,158,26,.2)}
+.wish-form .btn{justify-self:center;margin-top:4px}
+.cells{display:grid;gap:26px 22px;max-width:980px;margin:0 auto;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));align-items:start}
+.cell{position:relative;margin:0;padding:22px 24px 18px;background:var(--cream);border-radius:18px;box-shadow:0 12px 24px rgba(62,40,16,.12),inset 0 0 0 2.5px var(--sun);rotate:-.6deg}
+.cell:nth-of-type(even){rotate:.8deg;box-shadow:0 12px 24px rgba(62,40,16,.12),inset 0 0 0 2.5px var(--honey)}
+/* a hexagon of honey in the corner */
+.cell::before{content:"";position:absolute;right:14px;top:-12px;width:34px;height:38px;background:var(--honey);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);box-shadow:0 3px 0 var(--sun-d)}
+.cell blockquote{margin:0 0 10px;padding-right:24px;font-size:1.03rem;line-height:1.6;white-space:pre-line;overflow-wrap:anywhere}
+.cell figcaption{font-family:var(--hand);font-weight:700;font-size:1.6rem;line-height:1.1;color:var(--leaf-d);overflow-wrap:anywhere}
+html[lang="ta"] .cell figcaption{font-family:var(--ta);font-weight:900;font-size:1.1rem}
+.wishes-empty{text-align:center;margin:0 auto 20px;max-width:40ch;color:var(--ink2)}
+.wishes-more{display:flex;justify-content:center;margin-top:44px}
+
+/* ---------- help: the farm gate ---------- */
+#stay{color:var(--ink);padding-top:clamp(90px,12vw,120px);background:linear-gradient(180deg,#d9efb8,#bfe3a0)}
+/* a picket fence along the top */
+#stay::before{content:"";position:absolute;left:0;right:0;top:0;height:54px;pointer-events:none;
+  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 54'><path d='M10 6L20 0L30 6V54H10Z' fill='%23fff8e7' stroke='%23c8925a' stroke-width='2'/><path d='M0 16H40M0 36H40' stroke='%23c8925a' stroke-width='5'/></svg>") 0 0/40px 54px repeat-x}
+.help{max-width:600px;margin:0 auto;text-align:center}
+.mailbox{display:block;width:96px;height:auto;margin:0 auto 10px;overflow:visible;filter:drop-shadow(0 8px 8px rgba(62,40,16,.2))}
+.help .sec-title{font-size:clamp(2rem,8.4vw,2.8rem)}
+#stayText{margin:12px auto 24px;max-width:36ch;font-weight:600;color:var(--ink2);text-wrap:balance}
+#coordinators{display:grid;gap:12px}
+.coord{display:flex;align-items:center;gap:12px;text-align:left;padding:10px 10px 10px 14px;border-radius:18px;background:var(--cream);box-shadow:0 10px 20px rgba(62,40,16,.12)}
+.coord .av{width:40px;height:40px;flex:none}
+.coord .av svg{display:block;width:100%;height:100%;overflow:visible}
+.coord .who{flex:1;min-width:0}
+.c-name2{font-weight:700;font-size:1.05rem;line-height:1.3;overflow-wrap:anywhere}
+.c-phone{font-size:.95rem;word-spacing:.12em;color:var(--ink2);white-space:nowrap}
+.coord .btn{padding:10px 16px;min-height:46px;flex:none;background:var(--leaf-d);color:var(--cream);box-shadow:0 5px 0 #2f6221,0 10px 16px rgba(62,40,16,.2)}
+
+/* ---------- footer: sunset over the field ---------- */
+.foot{position:relative;padding:50px 16px 150px;text-align:center;color:var(--cream);overflow:hidden;background:linear-gradient(180deg,#f29e1a 0,#e2645a 45%,#6a3a7a 100%)}
+.foot .field{height:140px;filter:brightness(.35) saturate(.6)}
+.foot .eyebrow{background:var(--seed-d);color:var(--sun-l)}
+.hashtag{margin-top:10px;font-family:var(--disp);font-size:clamp(1.6rem,6.6vw,2.2rem);line-height:1.2;color:#fff;text-shadow:0 3px 0 var(--seed-d);overflow-wrap:anywhere}
+.thanks{margin:8px auto 0;max-width:40ch;font-weight:600;font-size:.95rem;line-height:1.5;color:#fff3d6;text-wrap:balance}
+.foot .btn{position:relative;margin-top:16px;min-height:42px;padding:8px 18px;font-size:.92rem}
+
+/* ---------- music + toast ---------- */
+#musicToggle{position:fixed;right:16px;bottom:16px;z-index:40;width:58px;height:58px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--sun-l);background:var(--seed);box-shadow:0 0 0 3px var(--cream),0 8px 18px rgba(62,40,16,.4)}
+/* a ring of petals that turns while the music plays */
+#musicToggle::before{content:"";position:absolute;inset:-6px;border-radius:50%;background:repeating-conic-gradient(var(--sun) 0 12deg,transparent 12deg 30deg);-webkit-mask:radial-gradient(circle,transparent 0 56%,#000 57%);mask:radial-gradient(circle,transparent 0 56%,#000 57%)}
+#musicToggle.spinning::before{animation:spin 8s linear infinite}
+#musicToggle svg{position:relative;width:20px;height:20px}
+#toast{position:fixed;left:50%;bottom:92px;z-index:60;transform:translate(-50%,20px);opacity:0;pointer-events:none;max-width:calc(100% - 32px);padding:12px 20px;border-radius:999px;background:var(--seed);color:var(--cream);box-shadow:0 0 0 2px var(--sun);font-weight:700;font-size:.95rem;text-align:center;transition:.3s}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (min-width:760px){
+  .lang{position:absolute;top:22px;right:24px}
+  .signs{max-width:900px;grid-template-columns:1fr 1fr;gap:30px 40px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
+  html{scroll-behavior:auto}
+}
+/* Tamil labels: no English-style letter-spacing or capitals, and a Tamil face. */
+html[lang="ta"] [data-ta]{letter-spacing:0;text-transform:none}
+html[lang="ta"] .sec-title[data-ta]{font-family:var(--ta);font-weight:900;font-size:clamp(1.7rem,7vw,2.5rem);line-height:1.35}
+html[lang="ta"] .eyebrow[data-ta]{font-family:var(--ta);font-weight:900;font-size:.9rem}
+html[lang="ta"] .help .sec-title[data-ta]{font-size:clamp(1.5rem,6vw,2.1rem)}
+/* On a narrow phone the Tamil call label doesn't fit beside the number, so the button keeps only its icon (the label
+   stays for screen readers). */
+@media (max-width:480px){
+  html[lang="ta"] .coord .btn{width:48px;height:48px;min-height:0;padding:0;border-radius:50%}
+  html[lang="ta"] .coord .btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+}
+</style>
+</head>
+<body>
+<!-- shared art: a sunflower head, a bee, a letterbox and small icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="head" viewBox="-60 -60 120 120">
+    <g fill="#d99700"><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(9)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(27)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(45)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(63)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(81)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(99)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(117)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(135)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(153)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(171)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(189)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(207)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(225)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(243)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(261)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(279)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(297)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(315)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(333)"/><path d="M0 0C-7-14-7-36 0-50C7-36 7-14 0 0Z" transform="rotate(351)"/></g>
+    <g fill="#ffd23f"><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(18)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(36)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(54)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(72)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(90)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(108)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(126)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(144)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(162)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(180)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(198)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(216)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(234)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(252)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(270)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(288)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(306)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(324)"/><path d="M0 0C-8-14-8-40 0-56C8-40 8-14 0 0Z" transform="rotate(342)"/></g>
+    <circle r="27" fill="#5a3a1a"/>
+    <circle r="22" fill="none" stroke="#3e2810" stroke-width="4" stroke-dasharray="2 3.5"/>
+    <circle r="14" fill="none" stroke="#3e2810" stroke-width="4" stroke-dasharray="2 3.5"/>
+    <circle r="6" fill="#3e2810"/>
+  </symbol>
+  <symbol id="bee" viewBox="0 0 60 50">
+    <g fill="#dff3fb" stroke="#8fc8e8" stroke-width="1.5" opacity=".9"><ellipse cx="24" cy="12" rx="12" ry="8" transform="rotate(-20 24 12)"/><ellipse cx="38" cy="12" rx="10" ry="7" transform="rotate(20 38 12)"/></g>
+    <ellipse cx="30" cy="30" rx="20" ry="14" fill="#f7b500"/>
+    <path d="M22 17V43M30 16V44M38 17V43" stroke="#3e2810" stroke-width="5"/>
+    <circle cx="12" cy="30" r="9" fill="#3e2810"/><circle cx="9" cy="28" r="2" fill="#fff"/>
+    <path d="M8 22Q4 14 2 12M14 21Q12 14 12 10" stroke="#3e2810" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M50 30L58 32L50 34Z" fill="#3e2810"/>
+  </symbol>
+  <symbol id="mailbox" viewBox="0 0 96 110">
+    <path d="M46 60V108" stroke="#7a4e2a" stroke-width="8" stroke-linecap="round"/>
+    <path d="M10 64V30C10 16 20 8 34 8H70C84 8 92 18 92 32V64Z" fill="#e2645a"/>
+    <path d="M10 64V30C10 16 20 8 34 8H40C28 10 22 18 22 32V64Z" fill="#c54d44"/>
+    <path d="M92 32C92 18 84 8 70 8" fill="none" stroke="#a63b33" stroke-width="3"/>
+    <rect x="30" y="26" width="48" height="8" rx="4" fill="#3e2810"/>
+    <path d="M74 12V-2M70-2H84V8H74" stroke="#f7b500" stroke-width="4" fill="none" stroke-linejoin="round"/>
+    <path d="M60 70C70 78 84 76 92 70" fill="none" stroke="#5c9a3a" stroke-width="3"/>
+    <g transform="translate(86 72)"><use href="#head" x="-14" y="-14" width="28" height="28"/></g>
+  </symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4M3.5 10.5h17"/></g></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></g></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></g></symbol>
+  <symbol id="i-go" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></g></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></symbol>
+  <symbol id="i-note" viewBox="0 0 24 24"><path fill="currentColor" d="M9 17.5V6.2l10-2.2v11.3a3 3 0 1 1-2-2.83V7.5l-6 1.3v8.7a3 3 0 1 1-2-2.83z"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 10 14"/><path d="M21 3l-6.5 18-4.5-7-7-4.5Z"/></g></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></g></symbol>
+</svg>
+
+<!-- ============ INTRO: the sun rises ============ -->
+<div id="curtain-overlay" data-hide-after="4200">
+  <span class="day" aria-hidden="true"></span>
+  <div class="i-top">
+    <p class="i-kicker" data-ta="ஹல்தி விழாவுக்கு அன்புடன் அழைக்கிறோம்">The haldi of</p>
+    <p class="i-names fit" data-bind="names">Vikram &amp; Kavya</p>
+    <p class="i-verse" lang="ta" data-bind="verse"></p>
+  </div>
+  <span class="sun" aria-hidden="true"></span>
+  <span class="bee" style="left:4%;top:38%;--mid:45vw;--end:96vw" aria-hidden="true"><svg viewBox="0 0 60 50"><use href="#bee"/></svg></span>
+  <span class="bee" style="left:14%;top:50%;--mid:30vw;--end:80vw;--dl:.5s" aria-hidden="true"><svg viewBox="0 0 60 50"><use href="#bee"/></svg></span>
+  <div class="i-field" aria-hidden="true">
+    <!-- seven sunflowers, each head turning on its own stem -->
+    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMax slice" focusable="false">
+      <g fill="none" stroke="#3f7a2a" stroke-width="9" stroke-linecap="round"><path d="M40 310V150M110 310V110M180 310V160M250 310V100M320 310V150M385 310V120M-20 310V170"/></g>
+      <g fill="#5c9a3a"><path d="M40 230c-26-8-32-28-20-40c14 12 20 26 20 40Z"/><path d="M110 200c26-8 32-28 20-40c-14 12-20 26-20 40Z"/><path d="M180 250c-26-8-32-28-20-40c14 12 20 26 20 40Z"/><path d="M250 190c26-8 32-28 20-40c-14 12-20 26-20 40Z"/><path d="M320 240c-26-8-32-28-20-40c14 12 20 26 20 40Z"/><path d="M385 210c26-8 32-28 20-40c-14 12-20 26-20 40Z"/><path d="M110 260c-24-8-30-26-18-38c12 12 18 24 18 38Z"/><path d="M250 260c24-8 30-26 18-38c-12 12-18 24-18 38Z"/></g>
+      <g transform="translate(40 150)"><g class="turn"><use href="#head" x="-50" y="-50" width="100" height="100"/></g></g>
+      <g transform="translate(110 110)"><g class="turn"><use href="#head" x="-62" y="-62" width="124" height="124"/></g></g>
+      <g transform="translate(180 160)"><g class="turn"><use href="#head" x="-46" y="-46" width="92" height="92"/></g></g>
+      <g transform="translate(250 100)"><g class="turn"><use href="#head" x="-66" y="-66" width="132" height="132"/></g></g>
+      <g transform="translate(320 150)"><g class="turn"><use href="#head" x="-52" y="-52" width="104" height="104"/></g></g>
+      <g transform="translate(385 120)"><g class="turn"><use href="#head" x="-58" y="-58" width="116" height="116"/></g></g>
+      <g transform="translate(-20 170)"><g class="turn"><use href="#head" x="-48" y="-48" width="96" height="96"/></g></g>
+    </svg>
+  </div>
+  <button type="button" class="tap-all" id="openCurtainBtn" data-open-invite aria-label="Tap the sun to open the invitation"></button>
+  <p class="i-hint" data-open-invite><svg aria-hidden="true"><use href="#i-sun"/></svg><span data-ta="சூரியனைத் தொடுங்கள்">Tap the sun</span></p>
+  <p class="i-done" data-ta="விடியல் வந்தது!">Rise and shine!</p>
+</div>
+
+<!-- ============ HERO: the summer sky and the big sunflower ============ -->
+<header id="hero">
+  <span class="cloud" style="left:-10%;top:60px;width:120px;--t:70s" aria-hidden="true"></span>
+  <span class="cloud" style="left:30%;top:330px;width:90px;--t:90s;animation-delay:-30s" aria-hidden="true"></span>
+  <span class="cloud" style="left:60%;top:420px;width:140px;--t:80s;animation-delay:-55s" aria-hidden="true"></span>
+  <span class="bee" style="left:0;top:520px;--mid:40vw;--end:100vw;--t:14s" aria-hidden="true"><svg viewBox="0 0 60 50"><use href="#bee"/></svg></span>
+  <nav class="lang" aria-label="Language">
+    <button type="button" class="lang-btn active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="ta" lang="ta">தமிழ்</button>
+  </nav>
+
+  <div class="hero-inner">
+    <p class="kicker rise" data-ta="மஞ்சள் வெயிலில் ஒரு விழா">A sunny yellow morning</p>
+    <h1 class="title rise r1" data-bind="title">Haldi Ceremony</h1>
+    <p class="names fit rise r1" data-bind="names"><span class="name-part">Vikram</span> <span class="hero-amp">&amp;</span> <span class="name-part">Kavya</span></p>
+    <p class="invites rise r2"><span class="pl" data-ta="சூரியகாந்திப் பூக்கள் நடுவே மஞ்சள் கொண்டாட்டத்துக்கு உங்களை அன்புடன் அழைக்கிறோம்">invite you to a haldi among the sunflowers</span><span class="sg" data-ta="சூரியகாந்திப் பூக்கள் நடுவே மஞ்சள் கொண்டாட்டத்துக்கு உங்களை அன்புடன் அழைக்கிறோம்">invites you to a haldi among the sunflowers</span></p>
+
+    <!-- the photo as the heart of a sunflower (data-bind="cover"); seeds stand in until one is uploaded -->
+    <div class="flower rise r3">
+      <svg aria-hidden="true" focusable="false"><use href="#head"/></svg>
+      <div class="heart" role="img" aria-label="Haldi photo">
+        <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <rect width="200" height="200" fill="#5a3a1a"/>
+          <g fill="none" stroke="#3e2810" stroke-width="7" stroke-dasharray="3 6"><circle cx="100" cy="100" r="88"/><circle cx="100" cy="100" r="70"/><circle cx="100" cy="100" r="52"/><circle cx="100" cy="100" r="34"/><circle cx="100" cy="100" r="16"/></g>
+          <g fill="#7a5230" opacity=".7"><circle cx="100" cy="100" r="6"/><circle cx="60" cy="70" r="3"/><circle cx="140" cy="60" r="3"/><circle cx="150" cy="130" r="3"/><circle cx="60" cy="140" r="3"/></g>
+        </svg>
+        <img class="cover-img" data-bind="cover" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
+      </div>
+    </div>
+
+    <p class="verse rise r3" lang="ta" data-bind="verse"></p>
+    <p id="heroTagline" class="reveal" data-bind="tagline">Before the wedding, a splash of yellow!</p>
+    <p class="date-pill reveal" id="heroDatePill" data-bind="dateLine">🌼 11th February 2027 • Chennai</p>
+    <div><a class="scroll-cue" href="#events"><span data-ta="விவரங்கள்">Follow the signs</span><i aria-hidden="true"></i></a></div>
+  </div>
+  <span class="field" aria-hidden="true"></span>
+</header>
+
+<main>
+<!-- ============ EVENTS: wooden signboards ============ -->
+<section id="events" class="section">
+  <div class="sec-head reveal">
+    <p class="eyebrow" data-ta="நாள் குறித்துக்கொள்ளுங்கள்">Mark your calendar</p>
+    <h2 class="sec-title" data-ta="விழா நிகழ்ச்சிகள்">The celebrations</h2>
+    <p class="sec-sub" data-ta="மஞ்சள் உடையில், மலர்ந்த புன்னகையுடன் வாருங்கள். எங்கே, எப்போது என்பது இதோ.">Wear yellow, bring your sunniest smile. Here's where to be, and when.</p>
+  </div>
+
+  <div id="eventsGrid" class="signs">
+    <template>
+    <article class="sign reveal">
+      <div class="board">
+        <span class="arrow"><span data-field="number">01</span></span>
+        <span class="c-icon" data-field="icon">🌼</span>
+        <h3 class="c-name" data-field="name">Haldi Ceremony</h3>
+        <div class="label">
+          <dl class="c-info">
+            <div data-if="date"><dt><svg class="ic" aria-hidden="true"><use href="#i-cal"/></svg><span data-ta="நாள்">Date</span></dt><dd data-field="date">11th February 2027</dd></div>
+            <div data-if="time"><dt><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg><span data-ta="நேரம்">Time</span></dt><dd data-field="time">9:30 AM</dd></div>
+            <div class="cwhere"><dt><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg><span data-ta="இடம்">Venue</span></dt><dd><strong data-field="place">Green Meadows Lawn</strong><small data-field="venue">Injambakkam, Chennai</small></dd></div>
+          </dl>
+          <p class="c-desc" data-field="desc">Turmeric, flowers, music and lots of laughter.</p>
+          <a class="btn" data-href="map" href="https://www.google.com/maps" target="_blank" rel="noopener"><span data-ta="வழி காட்டு">Get directions</span><svg aria-hidden="true"><use href="#i-go"/></svg></a>
+        </div>
+      </div>
+      <span class="post" aria-hidden="true"></span>
+    </article>
+    </template>
+  </div>
+</section>
+
+<!-- ============ COUNTDOWN: sunflower heads ============ -->
+<section id="countdown" class="section">
+  <div class="sec-head reveal">
+    <p class="eyebrow" data-ta="நாள் எண்ணிக்கை">Countdown</p>
+    <h2 class="sec-title" data-ta="மஞ்சள் நாளுக்கு இன்னும்">Until the yellow day</h2>
+  </div>
+  <div class="heads reveal" role="timer" aria-label="Time left until the haldi">
+    <div class="cd"><div class="head"><svg aria-hidden="true"><use href="#head"/></svg><b id="cdDays">000</b></div><p class="lbl" data-ta="நாட்கள்">Days</p></div>
+    <div class="cd"><div class="head"><svg aria-hidden="true"><use href="#head"/></svg><b id="cdHours">00</b></div><p class="lbl" data-ta="மணி">Hours</p></div>
+    <div class="cd"><div class="head"><svg aria-hidden="true"><use href="#head"/></svg><b id="cdMins">00</b></div><p class="lbl" data-ta="நிமிடம்">Mins</p></div>
+    <div class="cd"><div class="head"><svg aria-hidden="true"><use href="#head"/></svg><b id="cdSecs">00</b></div><p class="lbl" data-ta="வினாடி">Secs</p></div>
+  </div>
+  <p class="cd-when reveal"><span data-bind="dateLong">Thursday, 11 February 2027</span> <span class="sep" aria-hidden="true">·</span><span data-bind="time">9:30 AM</span></p>
+</section>
+
+<!-- ============ WISHES: the honeycomb ============ -->
+<section id="wishes" class="section">
+  <div class="sec-head reveal">
+    <p class="eyebrow" data-ta="வாழ்த்துப் புத்தகம்">Guest book</p>
+    <h2 class="sec-title" data-ta="தேன் போன்ற வாழ்த்துகள்">Sweet as honey</h2>
+    <p class="sec-sub" data-ta="உங்கள் வாழ்த்தை எழுதுங்கள்; எங்கள் தேன்கூட்டில் சேர்த்து வைப்போம்.">Leave a wish and we'll keep it in the hive.</p>
+  </div>
+
+  <form id="wishForm" class="wish-form reveal">
+    <svg class="form-bee" viewBox="0 0 60 50" aria-hidden="true" focusable="false"><use href="#bee"/></svg>
+    <label class="field2"><span data-ta="உங்கள் பெயர்">Your name</span><input id="wishName" maxlength="60" placeholder="e.g. Revathi Athai" data-ta-ph="எ.கா. ரேவதி அத்தை" required></label>
+    <label class="field2"><span data-ta="உங்கள் வாழ்த்து">Your wish</span><textarea id="wishMessage" maxlength="500" rows="4" placeholder="May your days be as bright as a field of sunflowers…" data-ta-ph="சூரியகாந்தி வயல் போல் உங்கள் நாட்கள் ஒளிரட்டும்…" required></textarea></label>
+    <button class="btn" type="submit"><svg aria-hidden="true"><use href="#i-send"/></svg><span data-ta="வாழ்த்து அனுப்பு">Send blessings</span></button>
+  </form>
+
+  <div id="wishesWall" class="cells">
+    <template>
+    <figure class="cell reveal"><blockquote data-field="message">May your days be as bright as a field of sunflowers!</blockquote><figcaption data-field="name">Revathi Athai</figcaption></figure>
+    </template>
+  </div>
+  <p id="wishesEmpty" class="wishes-empty" hidden data-ta="முதல் வாழ்த்தை நீங்களே எழுதுங்கள் 🌻">Be the first to send a blessing 🌻</p>
+  <div class="wishes-more"><button id="wishesMore" class="btn ghost" type="button" data-ta="மேலும் வாழ்த்துகள்">Show more wishes</button></div>
+</section>
+
+<!-- ============ HELP: the farm gate ============ -->
+<section id="stay" class="section">
+  <div class="help reveal">
+    <svg class="mailbox" viewBox="0 0 96 110" aria-hidden="true" focusable="false"><use href="#mailbox"/></svg>
+    <p class="eyebrow" data-ta="உதவிக்கு நாங்கள் இருக்கிறோம்">We're here to help</p>
+    <h2 class="sec-title" data-ta="வழி தெரியவில்லையா?">Need help finding us?</h2>
+    <p id="stayText" data-bind="help">Coming from out of town? Call us and we'll guide you.</p>
+    <div id="coordinators">
+      <template>
+      <div class="coord">
+        <span class="av" aria-hidden="true"><svg><use href="#head"/></svg></span>
+        <div class="who"><p class="c-name2" data-field="name">Vikram's family</p><p class="c-phone" data-field="phone">+91 90000 00000</p></div>
+        <a class="btn" data-href="tel" href="tel:+919000000000"><svg aria-hidden="true"><use href="#i-phone"/></svg><span data-ta="அழைக்க">Call</span></a>
+      </div>
+      </template>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER: sunset over the field ============ -->
+<footer class="foot">
+  <p class="eyebrow" data-ta="விழாவில் சந்திப்போம்">See you in the field</p>
+  <p class="hashtag" data-bind="hashtag">#VikramKavyaHaldi</p>
+  <p class="thanks" data-ta="எங்கள் மஞ்சள் காலையில் வெயிலாய் வந்ததற்கு நன்றி.">Thank you for being our sunshine.</p>
+  <button type="button" class="btn" id="shareBtn"><svg aria-hidden="true"><use href="#i-link"/></svg><span data-ta="இணைப்பை நகலெடு">Copy link</span></button>
+  <span class="field" aria-hidden="true"></span>
+</footer>
+
+<button id="musicToggle" type="button" aria-label="Play or pause music"><svg aria-hidden="true"><use href="#i-note"/></svg></button>
+<audio id="bgMusic" loop preload="auto"></audio>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* Intro, fitting the names and bilingual labels. js/invite.js opens the intro on tap (adds .open, then .hidden after
+   data-hide-after); the CSS raises the sun, brightens the sky, turns the flowers to face it and sends the bees
+   across, and this unlocks scrolling at the end and starts the hero's entrance. */
+(function(){
+  var html=document.documentElement, overlay=document.getElementById("curtain-overlay");
+  var reduce=!!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  if(overlay&&!html.classList.contains("intro-open")){
+    // Admin thumbnails and framed previews start on the page itself.
+    overlay.remove();
+  }else if(overlay){
+    var opened=false;
+    overlay.querySelectorAll("[data-open-invite]").forEach(function(b){
+      b.addEventListener("click",function(){
+        if(opened) return;
+        opened=true;
+        overlay.classList.add("open");
+        setTimeout(function(){ html.classList.remove("intro-open"); },reduce?0:3500);
+      });
+    });
+  }
+
+  // Names typed in Tamil get a Tamil face, and a long name shrinks its line until the longest word fits, rather
+  // than running off the screen.
+  function fit(){
+    document.querySelectorAll(".fit").forEach(function(n){
+      n.classList.toggle("ta",/[஀-௿]/.test(n.textContent));
+      n.style.fontSize="";
+      var w=n.clientWidth, widest=0;
+      n.querySelectorAll(".name-part").forEach(function(p){ widest=Math.max(widest,p.offsetWidth); });
+      if(w&&widest>w) n.style.fontSize=(parseFloat(getComputedStyle(n).fontSize)*w/widest*.95)+"px";
+    });
+  }
+
+  // Labels with data-ta (and placeholders with data-ta-ph) switch to that Tamil text when the guest picks தமிழ்.
+  var lang="en";
+  function labels(root){
+    root.querySelectorAll("[data-ta]").forEach(function(n){
+      if(n.dataset.en===undefined) n.dataset.en=n.textContent;
+      n.textContent=lang==="ta"?n.dataset.ta:n.dataset.en;
+    });
+    root.querySelectorAll("[data-ta-ph]").forEach(function(n){
+      if(n.dataset.enPh===undefined) n.dataset.enPh=n.placeholder;
+      n.placeholder=lang==="ta"?n.dataset.taPh:n.dataset.enPh;
+    });
+  }
+  var shown=function(n){ return n.style.display!=="none"&&n.textContent.trim(); };
+  document.addEventListener("invite:render",function(e){
+    lang=e.detail&&e.detail.lang==="ta"?"ta":"en";
+    labels(document);
+    // An event with neither a place nor an address has no venue line.
+    document.querySelectorAll("#eventsGrid .cwhere").forEach(function(row){
+      row.style.display=[].some.call(row.querySelectorAll("[data-field]"),shown)?"":"none";
+    });
+    // The date and time under the countdown: the dot only goes between two of them.
+    var when=document.querySelector(".cd-when");
+    if(when){
+      var count=[].filter.call(when.querySelectorAll("[data-bind]"),shown).length;
+      when.querySelector(".sep").style.display=count===2?"":"none";
+      when.style.display=count?"":"none";
+    }
+    fit();
+  });
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fit);
+  window.addEventListener("resize",fit);
+  // New wishes arrive without a full render, so label them as they are added.
+  var wall=document.getElementById("wishesWall");
+  if(wall&&window.MutationObserver) new MutationObserver(function(){ labels(wall); }).observe(wall,{childList:true});
+})();
+</script>
+</body>
+</html>
